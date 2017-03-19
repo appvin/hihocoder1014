@@ -29,7 +29,6 @@ public:
 		int s = int(word.size());
 		string t = "";
 		node *n = root;
-		node *ln = root;
 		for (int i = 0; i < s; i++)
 		{
 			t = word[i];
@@ -37,15 +36,15 @@ public:
 			{
 				node* nn = new node;
 				n->child[t] = nn;
-				ln = n;
 				n = nn;
+				n->flag++;
 			}
 			else
 			{
 				n = n->child[t];
+				n->flag++;
 			}
 		}
-		ln->child[t]->flag = 1;
 		return root;
 	}
 
@@ -67,7 +66,8 @@ public:
 				n = n->child[t];
 			}
 		}
-		q.push(n);
+		return n->flag;
+		/*q.push(n);
 		int sum = 0;
 		while (!q.empty())
 		{
@@ -88,7 +88,7 @@ public:
 				}
 			}
 		}
-		return sum;
+		return sum;*/
 	}
 
 	void print()
@@ -96,21 +96,14 @@ public:
 		queue<node*> q;
 		q.push(root);
 		node *n;
-		int f = 0;
 		while (!q.empty())
 		{
 			n = q.front();
 			q.pop();
-			if (f != n->flag)
-			{
-				cout << endl;
-				f++;
-			}
 			map<string, node*>::iterator it = n->child.begin();
 			for (; it != n->child.end(); it++)
 			{
-				cout << it->first;
-				it->second->flag = f + 1;
+				cout << it->first << it->second->flag;
 				q.push(it->second);
 			}
 			cout << " ";
@@ -129,7 +122,6 @@ int main()
 		cin >> s;
 		t.add_word(s);
 	}
-
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
